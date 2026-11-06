@@ -2,7 +2,7 @@
  * B / Day 1：固定文を借用して返す
  * 担当：入力・表示
  * 実行・ビルド・環境構築は不要。コードを補い、answer.mdのDay 1で照合する。
- *
+ *aaaaa
  * 【読む30分】見本10分、下記公式docsの指定節10分、answer.mdの概念説明10分。
  * Pointer Declarations：https://learn.microsoft.com/en-us/cpp/c-language/pointer-declarations?view=msvc-170
  * 読む箇所：宣言と間接参照
