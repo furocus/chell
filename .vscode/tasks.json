@@ -1,0 +1,31 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "chell: check environment",
+      "type": "process",
+      "command": "${env:ComSpec}",
+      "args": ["/d", "/c", ".\\scripts\\dev.cmd", "check"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "chell: build Debug",
+      "type": "process",
+      "command": "${env:ComSpec}",
+      "args": ["/d", "/c", ".\\scripts\\dev.cmd", "build", "debug"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": ["$msCompile"]
+    },
+    {
+      "label": "chell: build Release",
+      "type": "process",
+      "command": "${env:ComSpec}",
+      "args": ["/d", "/c", ".\\scripts\\dev.cmd", "build", "release"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "group": "build",
+      "problemMatcher": ["$msCompile"]
+    }
+  ]
+}
