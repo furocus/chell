@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "architecture": "x64",
+  "msvc": "14.51.36231",
+  "windowsSdk": "10.0.26100.0",
+  "cmake": "4.3.1",
+  "ninja": "1.13.2",
+  "verifiedOn": "2026-10-13",
+  "baseline": "AのPCで確認した暫定基準。5人で確認後、AとEが合意して更新する。",
+  "distributionNote": "CMakeのローカル配布表記は4.3.1-msvc1。数値部分を照合する。Visual Studio IDE自体は必須ではない。"
+}
