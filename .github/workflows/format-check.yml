@@ -21,6 +21,11 @@ jobs:
         with:
           persist-credentials: false
 
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.14'
+          architecture: x64
+
       - name: Install pinned clang-format and check formatting
         shell: pwsh
         run: |
@@ -30,17 +35,18 @@ jobs:
             throw 'config/toolchain.json must specify clangFormat as X.Y.Z'
           }
 
-          $asset = "LLVM-$version-win64.exe"
-          $url = "https://github.com/llvm/llvm-project/releases/download/llvmorg-$version/$asset"
-          $installer = Join-Path $env:RUNNER_TEMP $asset
-          $llvmDir = Join-Path $env:RUNNER_TEMP "llvm-$version"
-
-          Invoke-WebRequest -Uri $url -OutFile $installer -MaximumRetryCount 3 -RetryIntervalSec 10
-          $install = Start-Process -FilePath $installer `
-            -ArgumentList "/S /D=$llvmDir" -WindowStyle Hidden -Wait -PassThru
-          if ($install.ExitCode -ne 0) {
-            throw "LLVM installer failed with exit code $($install.ExitCode)"
+          $venv = Join-Path $env:RUNNER_TEMP 'format-venv'
+          python -m venv $venv
+          if ($LASTEXITCODE -ne 0) {
+            throw 'Could not create the clang-format virtual environment'
           }
 
-          $formatter = Join-Path $llvmDir 'bin/clang-format.exe'
+          $python = Join-Path $venv 'Scripts/python.exe'
+          & $python -m pip --isolated --disable-pip-version-check install `
+            --index-url https://pypi.org/simple --only-binary=:all: --no-deps "clang-format==$version"
+          if ($LASTEXITCODE -ne 0) {
+            throw "Could not install clang-format $version from PyPI"
+          }
+
+          $formatter = Join-Path $venv 'Scripts/clang-format.exe'
           ./scripts/check-format.ps1 -ClangFormatPath $formatter
