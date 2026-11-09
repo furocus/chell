@@ -20,21 +20,30 @@
    通常の文字配列出力とは契約が異なる。成功した領域はLocalFreeする。 */
 static DWORD example_format(DWORD code, wchar_t **out_message)
 {
-    return FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM |
-                          FORMAT_MESSAGE_ALLOCATE_BUFFER |
-                          FORMAT_MESSAGE_IGNORE_INSERTS,
-                          NULL, code, 0, (LPWSTR)out_message, 0, NULL);
+    return FormatMessageW(
+        FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_ALLOCATE_BUFFER |
+            FORMAT_MESSAGE_IGNORE_INSERTS,
+        NULL,
+        code,
+        0,
+        (LPWSTR)out_message,
+        0,
+        NULL);
 }
 
 /* 補完する1関数 */
 int receive_error_message(DWORD code, wchar_t **out_owned)
 {
-    if (out_owned == NULL) return 0;
+    if (out_owned == NULL) {
+        return 0;
+    }
     /* TODO 1: 出力先をNULLへ初期化する。 */
     DWORD characters = 0;
     /* TODO 2: 上の0をexample_formatの呼び出しへ置き換える。
        out_ownedと&out_ownedのどちらを渡すか、先に図で考える。 */
-    if (characters == 0) return 0;
+    if (characters == 0) {
+        return 0;
+    }
     return 1;
 }
 
@@ -44,7 +53,9 @@ static void walkthrough(void)
     wchar_t *message = NULL;
     int ok = receive_error_message(ERROR_FILE_NOT_FOUND, &message);
     /* 予想：成功後のmessage、解放方法、説明文がOS言語で変わるか。 */
-    if (ok) LocalFree(message);
+    if (ok) {
+        LocalFree(message);
+    }
     /* 失敗時と、出力先自体がNULLの場合はAPIを呼ぶ前から手で追う。 */
 }
 

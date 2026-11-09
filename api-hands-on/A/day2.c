@@ -23,10 +23,14 @@
 /* 見本：確保したintの場所を、呼び出し元のポインタへ返す。 */
 static int example_create_number(int **out_number)
 {
-    if (out_number == NULL) return 0;
+    if (out_number == NULL) {
+        return 0;
+    }
     *out_number = NULL;
     int *created = malloc(sizeof *created);
-    if (created == NULL) return 0;
+    if (created == NULL) {
+        return 0;
+    }
     *created = 7;
     *out_number = created;
     return 1;
@@ -35,9 +39,13 @@ static int example_create_number(int **out_number)
 /* 補完する1関数 */
 int copy_launch_line(const char *source, char **out_owned)
 {
-    if (out_owned == NULL) return 0;
+    if (out_owned == NULL) {
+        return 0;
+    }
     /* TODO 1: 出力先をNULLへ初期化する。 */
-    if (source == NULL) return 0;
+    if (source == NULL) {
+        return 0;
+    }
     size_t bytes = strlen(source) + 1;
     /* TODO 2: bytes分を確保してchar *copyへ受け取る宣言を補う。 */
     /* TODO 3: 確保失敗なら0を返す。本文と終端をコピーし、所有権を渡す。 */
@@ -52,9 +60,13 @@ static void walkthrough(void)
     int ok = copy_launch_line(source, &saved);
     source[0] = '#';
     /* 予想：成功時、savedの先頭まで'#'になるか。誰がいつfreeするか。 */
-    if (ok) free(saved);
+    if (ok) {
+        free(saved);
+    }
     int *number = NULL;
-    if (example_create_number(&number)) free(number);
+    if (example_create_number(&number)) {
+        free(number);
+    }
     /* 空文字列と、mallocがNULLを返す場合も紙で追う。 */
 }
 
