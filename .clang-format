@@ -17,6 +17,5 @@ BinPackArguments: false
 AllowAllArgumentsOnNextLine: false
 BreakAfterOpenBracketFunction: true
 AlignAfterOpenBracket: DontAlign
-SortIncludes: 
-    Enabled: false
+SortIncludes:Enabled: false
 ReflowComments: Never
