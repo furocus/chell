@@ -59,4 +59,4 @@ static void walkthrough(void)
 }
 
 /* メモ：誰の何を変更したか／借用か所有か／未解決点（この欄だけでよい）。 */
-hivhohoifhfgiohgfiojhfohifo
+hivhohoifhfgiohgfiojhfohif
