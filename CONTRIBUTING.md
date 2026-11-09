@@ -10,11 +10,6 @@
 git switch -c feature/<issue-number>-short-title
 ```
 
-例:
-
-```bash
-git switch -c feature/1-start-button
-```
 
 `short-title` は英語の kebab-case を基本とします。
 
