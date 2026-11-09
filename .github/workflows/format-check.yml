@@ -1,0 +1,46 @@
+name: format-check
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: format-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  format:
+    name: Format
+    runs-on: windows-2025
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Install pinned clang-format and check formatting
+        shell: pwsh
+        run: |
+          $toolchain = Get-Content config/toolchain.json -Raw | ConvertFrom-Json
+          $version = $toolchain.clangFormat
+          if ($version -notmatch '^\d+\.\d+\.\d+$') {
+            throw 'config/toolchain.json must specify clangFormat as X.Y.Z'
+          }
+
+          $asset = "LLVM-$version-win64.exe"
+          $url = "https://github.com/llvm/llvm-project/releases/download/llvmorg-$version/$asset"
+          $installer = Join-Path $env:RUNNER_TEMP $asset
+          $llvmDir = Join-Path $env:RUNNER_TEMP "llvm-$version"
+
+          Invoke-WebRequest -Uri $url -OutFile $installer
+          $install = Start-Process -FilePath $installer `
+            -ArgumentList "/S /D=$llvmDir" -WindowStyle Hidden -Wait -PassThru
+          if ($install.ExitCode -ne 0) {
+            throw "LLVM installer failed with exit code $($install.ExitCode)"
+          }
+
+          $formatter = Join-Path $llvmDir 'bin/clang-format.exe'
+          ./scripts/check-format.ps1 -ClangFormatPath $formatter
