@@ -35,7 +35,7 @@ jobs:
           $installer = Join-Path $env:RUNNER_TEMP $asset
           $llvmDir = Join-Path $env:RUNNER_TEMP "llvm-$version"
 
-          Invoke-WebRequest -Uri $url -OutFile $installer
+          Invoke-WebRequest -Uri $url -OutFile $installer -MaximumRetryCount 3 -RetryIntervalSec 10
           $install = Start-Process -FilePath $installer `
             -ArgumentList "/S /D=$llvmDir" -WindowStyle Hidden -Wait -PassThru
           if ($install.ExitCode -ne 0) {
