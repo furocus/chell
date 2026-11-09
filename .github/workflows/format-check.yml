@@ -1,0 +1,52 @@
+name: format-check
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: format-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  format:
+    name: Format
+    runs-on: windows-2025
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.14'
+          architecture: x64
+
+      - name: Install pinned clang-format and check formatting
+        shell: pwsh
+        run: |
+          $toolchain = Get-Content config/toolchain.json -Raw | ConvertFrom-Json
+          $version = $toolchain.clangFormat
+          if ($version -notmatch '^\d+\.\d+\.\d+$') {
+            throw 'config/toolchain.json must specify clangFormat as X.Y.Z'
+          }
+
+          $venv = Join-Path $env:RUNNER_TEMP 'format-venv'
+          python -m venv $venv
+          if ($LASTEXITCODE -ne 0) {
+            throw 'Could not create the clang-format virtual environment'
+          }
+
+          $python = Join-Path $venv 'Scripts/python.exe'
+          & $python -m pip --isolated --disable-pip-version-check install `
+            --index-url https://pypi.org/simple --only-binary=:all: --no-deps "clang-format==$version"
+          if ($LASTEXITCODE -ne 0) {
+            throw "Could not install clang-format $version from PyPI"
+          }
+
+          $formatter = Join-Path $venv 'Scripts/clang-format.exe'
+          ./scripts/check-format.ps1 -ClangFormatPath $formatter

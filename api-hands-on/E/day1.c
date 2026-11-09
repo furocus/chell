@@ -18,21 +18,31 @@
 #include <stddef.h>
 #include <string.h>
 
-typedef struct { const char *key; const char *note; } NoteEntry;
+typedef struct {
+    const char *key;
+    const char *note;
+} NoteEntry;
 
 /* 見本：int変数の中身を変更する。&numberを渡すのでint *で足りる。 */
 static void example_set_number(int *out_number)
 {
-    if (out_number != NULL) *out_number = 7;
+    if (out_number != NULL) {
+        *out_number = 7;
+    }
 }
 
 /* 補完する1関数 */
-int find_builtin_note(const NoteEntry *entries, size_t count,
-                   const char *key, const char **out_note)
+int find_builtin_note(
+    const NoteEntry *entries, size_t count, const char *key,
+    const char **out_note)
 {
-    if (out_note == NULL) return 0;
+    if (out_note == NULL) {
+        return 0;
+    }
     /* TODO 1: 呼び出し元の出力ポインタをNULLに初期化する。 */
-    if (key == NULL || (entries == NULL && count != 0)) return 0;
+    if (key == NULL || (entries == NULL && count != 0)) {
+        return 0;
+    }
     for (size_t i = 0; i < count; ++i) {
         if (strcmp(entries[i].key, key) == 0) {
             /* TODO 2: この行のnoteを、コピーせず借用で返す。 */
@@ -45,17 +55,17 @@ int find_builtin_note(const NoteEntry *entries, size_t count,
 /* 実行の代わりに、変数の変化を紙やエディター上で追う場面。 */
 static void walkthrough(void)
 {
-    const NoteEntry entries[] = {
-        {"help", "show command help"},
-        {"exit", "another fixed note"}
-    };
+    const NoteEntry entries[] = {{"help", "show command help"},
+        {"exit", "another fixed note"}};
     const char *selected = "before";
     int number = 0;
     example_set_number(&number);
     int found = find_builtin_note(entries, 2, "help", &selected);
     /* 予想：number、found、selectedの値を答える。 */
     /* 次にkeyを"missing"へ変えた場合を、実行せず手で追う。 */
-    (void)number; (void)found; (void)selected;
+    (void)number;
+    (void)found;
+    (void)selected;
 }
 
 /* メモ：誰の何を変更したか／借用か所有か／未解決点（この欄だけでよい）。 */

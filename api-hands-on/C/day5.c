@@ -15,7 +15,10 @@
 #include <windows.h>
 #include <shellapi.h>
 
-typedef struct { int argc; wchar_t **argv; } Parsed;
+typedef struct {
+    int argc;
+    wchar_t **argv;
+} Parsed;
 
 /* 実APIの見本：戻り値の**は引数文字列を指すポインタの表。
    argcの出力先は整数変数の場所なのでint *。 */
@@ -26,8 +29,12 @@ static wchar_t **example_split(const wchar_t *line, int *out_count)
 
 static void example_free_parsed(Parsed *parsed)
 {
-    if (parsed == NULL) return;
-    if (parsed->argv != NULL) LocalFree(parsed->argv);
+    if (parsed == NULL) {
+        return;
+    }
+    if (parsed->argv != NULL) {
+        LocalFree(parsed->argv);
+    }
     parsed->argv = NULL;
     parsed->argc = 0;
 }
@@ -35,13 +42,20 @@ static void example_free_parsed(Parsed *parsed)
 /* 補完する1関数 */
 int split_for_parser(const wchar_t *line, Parsed *out_parsed)
 {
-    if (out_parsed == NULL) return 0;
+    if (out_parsed == NULL) {
+        return 0;
+    }
     out_parsed->argc = 0;
     out_parsed->argv = NULL;
-    if (line == NULL || line[0] == L'\0') return 0;
+    if (line == NULL || line[0] == L'\0') {
+        return 0;
+    }
     wchar_t **items = NULL;
     /* TODO 1: example_splitを呼ぶ。個数の保存先には何のアドレスを渡すか。 */
-    if (items == NULL) { out_parsed->argc = 0; return 0; }
+    if (items == NULL) {
+        out_parsed->argc = 0;
+        return 0;
+    }
     /* TODO 2: 取得した表の所有ポインタをout_parsedのargvへ保存する。 */
     return 1;
 }
@@ -52,7 +66,9 @@ static void walkthrough(void)
     Parsed parsed = {0};
     int ok = split_for_parser(L"echo \"hello world\" \"\"", &parsed);
     /* 予想：argc、argv[1]、argv[2]。各要素を個別にfreeしてよいか。 */
-    if (ok) example_free_parsed(&parsed);
+    if (ok) {
+        example_free_parsed(&parsed);
+    }
     /* 予想：解放後のargcとargv。 */
 }
 

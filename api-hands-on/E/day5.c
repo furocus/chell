@@ -15,8 +15,13 @@
 #include <stddef.h>
 #include <wchar.h>
 
-typedef struct { size_t argc; const wchar_t *const *argv; } CommandView;
-typedef struct { int exit_requested; } ShellState;
+typedef struct {
+    size_t argc;
+    const wchar_t *const *argv;
+} CommandView;
+typedef struct {
+    int exit_requested;
+} ShellState;
 
 /* 見本：既知のASCIIコマンド名をMSVCのCRTで大文字小文字なし比較。
    一致は戻り値0。今回は既定Cロケールを変えない。 */
@@ -26,15 +31,21 @@ static int example_is_exit(const wchar_t *name)
 }
 
 /* 補完する1関数 */
-int apply_exit_request(const CommandView *command,
-                       ShellState *state, int *out_handled)
+int apply_exit_request(
+    const CommandView *command, ShellState *state, int *out_handled)
 {
-    if (out_handled == NULL) return 0;
+    if (out_handled == NULL) {
+        return 0;
+    }
     *out_handled = 0;
     if (command == NULL || state == NULL || command->argc == 0 ||
-        command->argv == NULL || !example_is_exit(command->argv[0])) return 0;
+        command->argv == NULL || !example_is_exit(command->argv[0])) {
+        return 0;
+    }
     /* TODO 1: 既知コマンドだったことを呼び出し元の整数へ知らせる。 */
-    if (command->argc != 1) return 0;
+    if (command->argc != 1) {
+        return 0;
+    }
     /* TODO 2: stateのexit_requestedを1へ変更する。 */
     return 1;
 }

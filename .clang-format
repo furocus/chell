@@ -1,0 +1,22 @@
+BasedOnStyle: LLVM
+ColumnLimit: 80
+IndentWidth: 4
+ContinuationIndentWidth: 4
+UseTab: Never
+LineEnding: CRLF
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterFunction: true
+  AfterControlStatement: Never
+AllowShortFunctionsOnASingleLine: None
+AllowShortBlocksOnASingleLine: Never
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+InsertBraces: true
+BinPackArguments: false
+AllowAllArgumentsOnNextLine: false
+BreakAfterOpenBracketFunction: true
+AlignAfterOpenBracket: DontAlign
+SortIncludes:
+  Enabled: false
+ReflowComments: Never
