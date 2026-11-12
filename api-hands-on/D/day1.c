@@ -18,18 +18,20 @@
 #include <stddef.h>
 #include <string.h>
 
+
 typedef struct {
     const char *key;
     const char *note;
 } NoteEntry;
 
+
 /* 見本：int変数の中身を変更する。&numberを渡すのでint *で足りる。 */
-static void example_set_number(int *out_number)
+static void example_set_number(int *out_number)   //ローカル関数
 {
     if (out_number != NULL) {
         *out_number = 7;
     }
-}
+
 
 /* 補完する1関数 */
 int find_directory_note(
@@ -45,11 +47,12 @@ int find_directory_note(
     }
     for (size_t i = 0; i < count; ++i) {
         if (strcmp(entries[i].key, key) == 0) {
+
             /* TODO 2: この行のnoteを、コピーせず借用で返す。 */
             return 1;
         }
     }
-    return 0;
+    return 0;   //見つからなかった場合0を返す
 }
 
 /* 実行の代わりに、変数の変化を紙やエディター上で追う場面。 */
@@ -69,3 +72,4 @@ static void walkthrough(void)
 }
 
 /* メモ：誰の何を変更したか／借用か所有か／未解決点（この欄だけでよい）。 */
+/*find_directory_note内のselectedの中身/借用*/
