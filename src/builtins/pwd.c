@@ -2,8 +2,7 @@
 #include <windows.h>
 #include <wchar.h>
 #include <locale.h>
-
-int main(void)
+void pwd(void)
 {
 	_wsetlocale(LC_ALL, L"");
 
@@ -17,18 +16,19 @@ int main(void)
 			command[len - 1] = L'\0';   //末端が\0なら削除
 		}
 	}
-    
+//ここにコマンドチェックの処理を追加する
+
 	if (wcscmp(command, L"pwd") == 0 || wcscmp(command, L"PWD") == 0) {   //入力値がpwdまたはPWDの時
 			if (GetCurrentDirectoryW(MAX_PATH, path) != 0)   //現在のディレクトリ取得
 		{
 			wprintf(L"%ls\n", path);
 		}
 			else {   //pwdを認識後取得できなかった場合
-			wprintf("現在の位置を取得できませんでした");
+			wprintf(L"現在の位置を取得できませんでした");
 			}
 	}
 	else {   //pwd以外の値が入力されたとき
-		wprintf("無効なコマンドです");
+		wprintf(L"無効なコマンドです");
 	}
 
 	return 0;
