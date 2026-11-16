@@ -2,18 +2,18 @@
 #include <wchar.h>
 //TODO: ヘッダファイルを作成して契約に則った責任分割を行う
 
-int echo(int argc, const wchar_t *const argv[]) 
+int echo(int argc, const wchar_t *const argv[])
 {
     int i; //ループカウンタ
 
-    for(i = 0; i < argc; i++) {
+    for (i = 0; i < argc; i++) {
         // fputwcの戻り値が0以下なら、書き込み失敗。
-        if(i > 1 && fputwc(L' ', stdout) < 0) {
+        if (i > 1 && fputwc(L' ', stdout) < 0) {
             // 出力に失敗したので、残りを出力せず関数を終了する。
-        return 1;
+            return 1;
         }
         // fputwcの戻り値がWEOFなら、書き込み失敗。
-        if(fputws(argv[i], stdout) < 0) {
+        if (fputws(argv[i], stdout) < 0) {
             // 出力に失敗したので、残りを出力せず関数を終了する。
             return 1;
         }
