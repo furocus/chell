@@ -31,7 +31,7 @@ int find_input_note(const NoteEntry *entries, size_t count,
                    const char *key, const char **out_note)
 {
     if (out_note == NULL) return 0;
-    /* TODO 1: 呼び出し元の出力ポインタをNULLに初期化する。 */
+    *out_note = NULL;
     if (key == NULL || (entries == NULL && count != 0)) return 0;
     for (size_t i = 0; i < count; ++i) {
         if (strcmp(entries[i].key, key) == 0) {
