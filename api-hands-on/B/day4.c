@@ -20,17 +20,24 @@
 /* 見本：表の先頭から、1本の文字列ポインタを借りる。 */
 static const char *example_first(const char *const values[], size_t count)
 {
-    if (values == NULL || count == 0) return NULL;
+    if (values == NULL || count == 0) {
+        return NULL;
+    }
     return values[0];
 }
 
 /* 補完する1関数 */
-int select_display_argument(const char *const argv[], size_t count,
-                   size_t index, const char **out_argument)
+int select_display_argument(
+    const char *const argv[], size_t count, size_t index,
+    const char **out_argument)
 {
-    if (out_argument == NULL) return 0;
+    if (out_argument == NULL) {
+        return 0;
+    }
     /* TODO 1: 出力先のポインタをNULLへ初期化する。 */
-    if (argv == NULL || index >= count) return 0;
+    if (argv == NULL || index >= count) {
+        return 0;
+    }
     /* TODO 2: 指定要素の文字列ポインタを借用して返す。 */
     return 1;
 }
@@ -44,7 +51,9 @@ static void walkthrough(void)
     int ok = select_display_argument(arguments, 3, 1, &selected);
     /* 予想：first、selected、selected[0]のそれぞれが指す／表すもの。 */
     /* index=3、count=0、NULL出力先へ変えた場合を手で追う。 */
-    (void)first; (void)ok; (void)selected;
+    (void)first;
+    (void)ok;
+    (void)selected;
 }
 
 /* メモ：誰の何を変更したか／借用か所有か／未解決点（この欄だけでよい）。 */

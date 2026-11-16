@@ -25,14 +25,21 @@ static DWORD example_read_directory(wchar_t *buffer, DWORD capacity)
 /* 補完する1関数 */
 int own_current_directory(wchar_t **out_path)
 {
-    if (out_path == NULL) return 0;
+    if (out_path == NULL) {
+        return 0;
+    }
     /* TODO 1: 呼び出し元のポインタをNULLへ初期化する。 */
     DWORD needed = example_read_directory(NULL, 0);
-    if (needed == 0) return 0;
+    if (needed == 0) {
+        return 0;
+    }
     wchar_t *buffer = NULL;
     /* TODO 2: needed要素分のwchar_t領域を確保し、失敗なら0を返す。 */
     DWORD copied = example_read_directory(buffer, needed);
-    if (copied == 0 || copied >= needed) { free(buffer); return 0; }
+    if (copied == 0 || copied >= needed) {
+        free(buffer);
+        return 0;
+    }
     /* TODO 3: 所有ポインタを呼び出し元へ渡す。 */
     return 1;
 }
@@ -44,7 +51,9 @@ static void walkthrough(void)
     int ok = own_current_directory(&path);
     /* 手で追う：needed=12、copied=11、sizeof(wchar_t)=2と仮定。
        確保バイト数、終端の領域、最後にfreeする人を答える。 */
-    if (ok) free(path);
+    if (ok) {
+        free(path);
+    }
     /* copied=12以上や0なら、bufferを返してよいか。 */
 }
 

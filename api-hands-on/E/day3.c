@@ -20,13 +20,17 @@
 /* 見本：ポインタではなく、呼び出し元のintを0へ戻す。 */
 static void example_reset_number(int *number)
 {
-    if (number != NULL) *number = 0;
+    if (number != NULL) {
+        *number = 0;
+    }
 }
 
 /* 補完する1関数 */
 void release_help_copy(char **owned)
 {
-    if (owned == NULL) return;
+    if (owned == NULL) {
+        return;
+    }
     /* TODO 1: 呼び出し元が所有する領域をfreeする。NULLでもfreeは許される。 */
     /* TODO 2: 呼び出し元のポインタ変数へNULLを代入する。 */
 }

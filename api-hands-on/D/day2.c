@@ -23,22 +23,32 @@
 /* 見本：確保したintの場所を、呼び出し元のポインタへ返す。 */
 static int example_create_number(int **out_number)   //ローカル関数宣言
 {
-    if (out_number == NULL) return 0;   //out_numberがNULLなら0を返す
+    if (out_number == NULL) {
+      return 0;   //out_numberがNULLなら0を返す
+    }
     *out_number = NULL;   //ポインタ先をNULLにする
     int *created = malloc(sizeof *created);   //createdにintのサイズをmallocで確保する
-    if (created == NULL) return 0;   //createdがNULLなら0を返す
+    if (created == NULL) {
+      return 0; //createdがNULLなら0を返す
+    }
     *created = 7;   //ポインタ先に7を代入する
     *out_number = created;   //ポインタ先にcreatedの値を代入
+
     return 1;
 }
 
 /* 補完する1関数 */
 int copy_directory_path(const char *source, char **out_owned)   //文字列のコピーを作る関数
 {
-    if (out_owned == NULL) return 0;   //out_ownedがNULLなら0を返す
-    /* TODO 1: 出力先をNULLへ初期化する。 */
-    if (source == NULL) return 0;   //sorceがNULLなら0を返す
+    if (out_owned == NULL) {
+      return 0;   //out_ownedがNULLなら0を返す
+    }
+  /* TODO 1: 出力先をNULLへ初期化する。 */
+    if (source == NULL) {
+      return 0;   //sorceがNULLなら0を返す
+    }
     size_t bytes = strlen(source) + 1;   //文字列の長さ+終端(\0)のバイト数をbytesに代入
+
     /* TODO 2: bytes分を確保してchar *copyへ受け取る宣言を補う。 */
     /* TODO 3: 確保失敗なら0を返す。本文と終端をコピーし、所有権を渡す。 */
     return 1;
@@ -52,9 +62,13 @@ static void walkthrough(void)   //ローカル関数宣言
     int ok = copy_directory_path(source, &saved);   //okにcoppy_directory_pathの戻り値を代入、savedにコピー
     source[0] = '#';
     /* 予想：成功時、savedの先頭まで'#'になるか。誰がいつfreeするか。 */
-    if (ok) free(saved);
+    if (ok) {
+        free(saved);
+    }
     int *number = NULL;
-    if (example_create_number(&number)) free(number);
+    if (example_create_number(&number)) {
+        free(number);
+    }
     /* 空文字列と、mallocがNULLを返す場合も紙で追う。 */
 }
 
