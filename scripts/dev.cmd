@@ -2,6 +2,8 @@
 setlocal EnableExtensions DisableDelayedExpansion
 set "CSHELL_ACTION=%~1"
 if not defined CSHELL_ACTION set "CSHELL_ACTION=check"
+if /i "%CSHELL_ACTION%"=="format" goto format
+if /i "%CSHELL_ACTION%"=="format-check" goto format
 set "CSHELL_PRESET=%~2"
 if not defined CSHELL_PRESET set "CSHELL_PRESET=debug"
 if /i not "%CSHELL_PRESET%"=="debug" if /i not "%CSHELL_PRESET%"=="release" goto usage
@@ -11,6 +13,19 @@ if /i "%CSHELL_ACTION%"=="build" goto init
 if /i "%CSHELL_ACTION%"=="test" goto init
 if /i "%CSHELL_ACTION%"=="code" goto init
 goto usage
+
+:format
+if not "%~2"=="" goto usage
+where powershell.exe >nul 2>nul
+if errorlevel 1 goto missingpowershell
+set "CSHELL_FORMAT_MODE=fix"
+if /i "%CSHELL_ACTION%"=="format-check" set "CSHELL_FORMAT_MODE=check"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0format.ps1" -Mode %CSHELL_FORMAT_MODE%
+exit /b %errorlevel%
+
+:missingpowershell
+echo [ERROR] Windows PowerShell 5.1 is required for formatting. Restore powershell.exe to PATH. See CONTRIBUTING.md. 1>&2
+exit /b 1
 
 :init
 set "CSHELL_LOCK=%~dp0..\config\toolchain.json"
@@ -85,4 +100,5 @@ echo [ERROR] MSVC/SDK initialization failed. See docs/ENVIRONMENT.md. 1>&2
 exit /b 1
 :usage
 echo Usage: scripts\dev.cmd [check^|configure^|build^|test^|code] [debug^|release] 1>&2
+echo        scripts\dev.cmd [format^|format-check] 1>&2
 exit /b 2
