@@ -8,13 +8,14 @@ Chellをビルドするための環境を準備します。コマンドは、特
 
 | ツール | 用途 |
 |---|---|
-| Git | ソースコードの取得・変更管理 |
+| Git for Windows | ソースコードの取得・変更管理 |
+| Windows PowerShell 5.1以上 | 開発用スクリプトの実行（Windows標準の `powershell.exe` を使用） |
 | MSVCのC/C++ビルドツール | x64向けのコンパイル・リンク |
 | Windows SDK | Windows向けのヘッダーとライブラリ |
 | CMake | ビルド設定の生成 |
 | Ninja | ビルドの実行 |
 
-使用するバージョンは [config/toolchain.json](../config/toolchain.json) で管理しています。最新版ではなく、設定に記載されたバージョンを準備してください。
+MSVC・Windows SDK・CMake・Ninjaのバージョンは [config/toolchain.json](../config/toolchain.json) で管理しています。最新版ではなく、設定に記載されたバージョンを準備してください。
 
 ```powershell
 Get-Content -Encoding UTF8 .\config\toolchain.json
@@ -63,6 +64,14 @@ VS Codeでリポジトリのルートを開くと、登録済みのタスクか�
 ```powershell
 .\scripts\dev.cmd code
 ```
+
+## フォーマット確認に必要な環境
+
+ソースコードの整形・検査には、Windows PowerShell 5.1以上、PATHに登録された `git.exe`、および `config/toolchain.json` の `clangFormat` と一致するclang-formatが必要です。PowerShell 7の追加導入は不要です。
+
+`dev.cmd format` と `dev.cmd format-check` は、MSVC・Windows SDK・CMake・Ninjaの環境確認や初期化を行わずに実行できます。
+
+clang-formatの指定方法、自動探索の仕組み、実行コマンドは、[CONTRIBUTING.md](../CONTRIBUTING.md)の「C/H の整形」を参照してください。
 
 ## よくあるエラー
 
