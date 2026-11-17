@@ -1,9 +1,12 @@
 #include <stdio.h>
+#include <wchar.h>
+#include "builtins/echo.c"
+#include "builtins/pwd.c"
 
 int main(void)
 {
 
-    printf("Hello World"); //テストコード
+    const wchar_t *args[] = {L"echo", L"hello", L"world"};
 
-    return 0;
+    return echo(3, args);
 }
