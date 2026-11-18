@@ -1,0 +1,23 @@
+{
+  "versions": {
+    "mermaid": "11.12.1",
+    "marked": "15.0.12"
+  },
+  "sources": {
+    "README.md": "e8f2cf6b4e6058d3f5b33b882c652aad8b6e4bae0f91cbb74b9be23e71e871e6",
+    "BEHAVIOR.md": "578df52bcef7b4802f4be1d4999aee41870aecdcc86ae2f955eea542c844fe41",
+    "PUBLIC_API.md": "db872f2aff38289daee7cd3f20107868a319d13441c6a8392d3303dd0cad7d10",
+    "DEVELOPMENT_GUIDE.md": "ee68fc63d13b094cfa497e5ba7c13fd445c624cc3c5be72f5b40d670816dfc69",
+    "VALIDATION.md": "a3edd1265df3c25837e2598242f87f68a13275e285de88fa973abfc77bf39d69",
+    "tools/build-preview.cjs": "8fba07650a95c27acfdd8b13c95f35509c9b1abadf3451d815582c9998e514e1"
+  },
+  "diagrams": 5,
+  "outputs": {
+    "index.html": "694ba5f409cebb732691d91c2e71983c55cbd49066b8ee9456e2f759f20d9b54",
+    "diagrams/overview-1.svg": "f7d90c1290740bfd3a94896f54f6ec1dc2a595c8c9a0a4314a89e0d983f86585",
+    "diagrams/overview-2.svg": "80ef363f4c4cedaebc4ef62be6820ced0a9239829f21709bec9479deb59ed000",
+    "diagrams/api-1.svg": "63a82c0a62f63f544d5c2517a554849b17d9833f656a80947a5ee9311b57549c",
+    "diagrams/api-2.svg": "1d6d517af394f7311974c854ee035a0fe9bfca0fc22513fc16b9119d38ee767c",
+    "diagrams/guide-1.svg": "19e0f2fc711b87c0cbcd97326d81b890d967bd1e841f1768cc11c44953b9c6b8"
+  }
+}

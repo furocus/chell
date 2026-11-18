@@ -1,0 +1,6 @@
+# Keep documentation hashes stable across Windows and other checkouts.
+*.md text eol=lf
+*.cjs text eol=lf
+*.html text eol=lf
+*.svg text eol=lf
+*.json text eol=lf
