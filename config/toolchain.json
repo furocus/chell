@@ -7,5 +7,6 @@
   "ninja": "1.13.2",
   "verifiedOn": "2026-10-13",
   "baseline": "EのPCで確認した暫定基準。5人で確認後、AとEが合意して更新する。",
-  "distributionNote": "CMakeのローカル配布表記は4.3.1-msvc1。数値部分を照合する。Visual Studio IDE自体は必須ではない。"
+  "distributionNote": "CMakeのローカル配布表記は4.3.1-msvc1。数値部分を照合する。Visual Studio IDE自体は必須ではない。",
+  "clangFormat": "22.1.3"
 }

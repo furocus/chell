@@ -20,23 +20,38 @@
 /* 実APIの見本：構造体の中身を埋めるのでout_processは単ポインタ。
    lpCommandLineはW版APIに書き換えられ得る。読み取り専用文字列は渡さない。
    成功したhThreadとhProcessは、利用後それぞれCloseHandleが必要。 */
-static BOOL example_start(const wchar_t *exe, wchar_t *mutable_line,
-                          PROCESS_INFORMATION *out_process)
+static BOOL example_start(
+    const wchar_t *exe, wchar_t *mutable_line, PROCESS_INFORMATION *out_process)
 {
-    if (out_process == NULL) return FALSE;
+    if (out_process == NULL) {
+        return FALSE;
+    }
     STARTUPINFOW startup = {0};
     startup.cb = sizeof startup;
     ZeroMemory(out_process, sizeof *out_process);
-    return CreateProcessW(exe, mutable_line, NULL, NULL, FALSE, 0,
-                          NULL, NULL, &startup, out_process);
+    return CreateProcessW(
+        exe,
+        mutable_line,
+        NULL,
+        NULL,
+        FALSE,
+        0,
+        NULL,
+        NULL,
+        &startup,
+        out_process);
 }
 
 /* 補完する1関数 */
 int prepare_win32_line(const wchar_t *raw, wchar_t **out_line)
 {
-    if (out_line == NULL) return 0;
+    if (out_line == NULL) {
+        return 0;
+    }
     /* TODO 1: 呼び出し元のポインタをNULLへ初期化する。 */
-    if (raw == NULL) return 0;
+    if (raw == NULL) {
+        return 0;
+    }
     size_t bytes = (wcslen(raw) + 1) * sizeof(wchar_t);
     wchar_t *copy = NULL;
     /* TODO 2: bytesを確保してcopyへ代入し、失敗時は0を返す。 */
@@ -52,7 +67,9 @@ static void walkthrough(void)
     int ok = prepare_win32_line(raw, &line);
     /* 予想：rawは変わるか。lineの解放は誰が行うか。
        example_startはここでは呼ばない。プロセス起動の課題ではない。 */
-    if (ok) free(line);
+    if (ok) {
+        free(line);
+    }
 }
 
 /* メモ：なぜその段数か／作成元と解放方法／未解決点（この欄だけでよい）。 */
