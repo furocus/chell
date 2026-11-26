@@ -163,5 +163,3 @@ void command_free(Command *command)
 
     *command = (Command){0}; // 解放後、各メンバーを初期状態に戻す
 }
-int main(void)
-{
