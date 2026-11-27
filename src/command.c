@@ -5,7 +5,7 @@
 #include <windows.h>
 #include <shellapi.h>
 
-#define MAX_LINE_LENGTH 1000 //仮で数字決めてる
+#define MAX_LINE_LENGTH 4096
 
 /* Command構造体 */
 typedef struct {
@@ -13,20 +13,27 @@ typedef struct {
     wchar_t **argv;    //コマンドの引数を入れる配列
     wchar_t *raw_line; //コマンドの元の文字列
 } Command;
-
+/*解析結果を表す列挙型*/
+typedef enum {
+    PARSE_OK = 0,//成功
+    PARSE_EMPTY,//空入力
+    PARSE_TOO_LONG,//入力文字数の超過
+    PARSE_TOO_MANY_ARGS,//引数の数の超過
+    PARSE_ERROR//その他の解析エラー
+} ParseStatus;
 /* parse_command */
-int parse_command(const wchar_t *line, Command *out_command)
+ParseStatus parse_command(const wchar_t *line, Command *out_command)
 {
     if (out_command == NULL) // 構造体のアドレスがNULLかどうか確認
     {
-        return 1; // 構造体にアクセスできないため失敗を返す
+        return PARSE_ERROR; // 構造体にアクセスできないため失敗を返す
     }
 
     *out_command = (Command){0}; // 構造体の各メンバーを初期化
 
     if (line == NULL) // 入力文字列のアドレスがNULLかどうか確認
     {
-        return 1; // 入力文字列がないため失敗を返す
+        return PARSE_ERROR; // 入力文字列がないため失敗を返す
     }
 
     const wchar_t *trimmed_line = line; // 先頭の空白を読み飛ばすためのポインタ
@@ -40,10 +47,10 @@ int parse_command(const wchar_t *line, Command *out_command)
     if (*trimmed_line ==
         L'\0') // 空白とタブを読み飛ばした結果、文字列が空なら失敗
     {
-        return 1; // 失敗を返す（0が成功、1が失敗）
+        return PARSE_EMPTY; // 失敗を返す
     }
     if (wcslen(trimmed_line) > MAX_LINE_LENGTH) {
-        return 1; // 文字数の上限を超えているため失敗
+        return PARSE_TOO_LONG; // 文字数の上限を超えているため失敗
     }
     int argc = 0;          //引数の数を数える変数（初期化）
     wchar_t **argv = NULL; //引数の文字列を格納する配列のアドレス（初期化）
@@ -58,7 +65,7 @@ int parse_command(const wchar_t *line, Command *out_command)
 
     if (copy == NULL) //メモリの確保に失敗したか確認
     {
-        return 1; //失敗を返す
+        return PARSE_ERROR; //失敗を返す
     }
 
     memcpy(copy, trimmed_line, bytes); //入力した文字列を確保したメモリにコピー
@@ -96,7 +103,7 @@ int parse_command(const wchar_t *line, Command *out_command)
         {
             free(copy);                  // raw_line用に確保したメモリを解放
             *out_command = (Command){0}; // Command構造体を空の状態に戻す
-            return 1;                    // 演算子が見つかったため失敗を返す
+            return PARSE_ERROR;                    // 演算子が見つかったため失敗を返す
         }
     }
 
@@ -104,7 +111,7 @@ int parse_command(const wchar_t *line, Command *out_command)
     {
         free(copy);                  // raw_line用に確保したメモリを解放
         *out_command = (Command){0}; // Command構造体を空の状態に戻す
-        return 1;                    // 引用符が閉じられていないため失敗を返す
+        return PARSE_ERROR;                    // 引用符が閉じられていないため失敗を返す
     }
 
     argv = CommandLineToArgvW(
@@ -115,7 +122,7 @@ int parse_command(const wchar_t *line, Command *out_command)
     {
         free(copy);                  // raw_line用に確保したメモリを解放
         *out_command = (Command){0}; // Command構造体を空の状態に戻す
-        return 1;                    // 失敗を返す
+        return PARSE_ERROR;                    // 失敗を返す
     }
 
     if (argc > 64) // コマンド名を含めた引数の数が64個を超えていないか確認
@@ -123,7 +130,7 @@ int parse_command(const wchar_t *line, Command *out_command)
         LocalFree(argv); // CommandLineToArgvWが確保した引数の配列を解放
         free(copy);      // raw_line用に確保したメモリを解放
         *out_command = (Command){0}; // Command構造体を空の状態に戻す
-        return 1;                    // 失敗を返す
+        return PARSE_TOO_MANY_ARGS;                    // 失敗を返す
     }
 
     if (argc == 0 || argv[0][0] == L'\0') //頭文字チェック
@@ -131,14 +138,14 @@ int parse_command(const wchar_t *line, Command *out_command)
         LocalFree(argv); //CommandLineToArgvWが確保した引数の配列を解放
         free(copy);      // raw_line用に確保したメモリを解放
         *out_command = (Command){0}; // Command構造体を空の状態に戻す
-        return 1;                    // 失敗を返す
+        return PARSE_ERROR;                    // 失敗を返す
     }
 
     out_command->argc = argc; // 解析した引数の数をCommand構造体のargcに保存
     out_command->argv =
         argv; // 解析した引数の配列のアドレスをCommand構造体のargvに保存
 
-    return 0; //成功を返す
+    return PARSE_OK; //成功を返す
 }
 
 /* command_free */
