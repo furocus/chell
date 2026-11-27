@@ -15,11 +15,11 @@ typedef struct {
 } Command;
 /*解析結果を表す列挙型*/
 typedef enum {
-    PARSE_OK = 0,//成功
-    PARSE_EMPTY,//空入力
-    PARSE_TOO_LONG,//入力文字数の超過
-    PARSE_TOO_MANY_ARGS,//引数の数の超過
-    PARSE_ERROR//その他の解析エラー
+    PARSE_OK = 0,        //成功
+    PARSE_EMPTY,         //空入力
+    PARSE_TOO_LONG,      //入力文字数の超過
+    PARSE_TOO_MANY_ARGS, //引数の数の超過
+    PARSE_ERROR          //その他の解析エラー
 } ParseStatus;
 /* parse_command */
 ParseStatus parse_command(const wchar_t *line, Command *out_command)
@@ -103,7 +103,7 @@ ParseStatus parse_command(const wchar_t *line, Command *out_command)
         {
             free(copy);                  // raw_line用に確保したメモリを解放
             *out_command = (Command){0}; // Command構造体を空の状態に戻す
-            return PARSE_ERROR;                    // 演算子が見つかったため失敗を返す
+            return PARSE_ERROR;          // 演算子が見つかったため失敗を返す
         }
     }
 
@@ -111,7 +111,7 @@ ParseStatus parse_command(const wchar_t *line, Command *out_command)
     {
         free(copy);                  // raw_line用に確保したメモリを解放
         *out_command = (Command){0}; // Command構造体を空の状態に戻す
-        return PARSE_ERROR;                    // 引用符が閉じられていないため失敗を返す
+        return PARSE_ERROR;          // 引用符が閉じられていないため失敗を返す
     }
 
     argv = CommandLineToArgvW(
@@ -122,7 +122,7 @@ ParseStatus parse_command(const wchar_t *line, Command *out_command)
     {
         free(copy);                  // raw_line用に確保したメモリを解放
         *out_command = (Command){0}; // Command構造体を空の状態に戻す
-        return PARSE_ERROR;                    // 失敗を返す
+        return PARSE_ERROR;          // 失敗を返す
     }
 
     if (argc > 64) // コマンド名を含めた引数の数が64個を超えていないか確認
@@ -130,7 +130,7 @@ ParseStatus parse_command(const wchar_t *line, Command *out_command)
         LocalFree(argv); // CommandLineToArgvWが確保した引数の配列を解放
         free(copy);      // raw_line用に確保したメモリを解放
         *out_command = (Command){0}; // Command構造体を空の状態に戻す
-        return PARSE_TOO_MANY_ARGS;                    // 失敗を返す
+        return PARSE_TOO_MANY_ARGS;  // 失敗を返す
     }
 
     if (argc == 0 || argv[0][0] == L'\0') //頭文字チェック
@@ -138,7 +138,7 @@ ParseStatus parse_command(const wchar_t *line, Command *out_command)
         LocalFree(argv); //CommandLineToArgvWが確保した引数の配列を解放
         free(copy);      // raw_line用に確保したメモリを解放
         *out_command = (Command){0}; // Command構造体を空の状態に戻す
-        return PARSE_ERROR;                    // 失敗を返す
+        return PARSE_ERROR;          // 失敗を返す
     }
 
     out_command->argc = argc; // 解析した引数の数をCommand構造体のargcに保存
